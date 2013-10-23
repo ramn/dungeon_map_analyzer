@@ -7,7 +7,7 @@ import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
 import java.util.LinkedHashMap
 import java.util.ArrayList
-//import java.util.{Map => JMap}
+
 
 object Main extends App {
   val pathToYamlMap = Paths.get(args(0))
