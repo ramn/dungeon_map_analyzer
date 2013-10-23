@@ -43,12 +43,8 @@ class MapAnalyzer(pathToYamlMap: Path) {
     .map { case (key, value) => key -> value.asScala.toMap }
 
   def print {
-    println(
-      //resources.head._2.getClass,
-      //resources.getClass,
-      resources,
-      map("Round Room"),
-      map("Round Room").getClass
-    )
+    println(resources)
+    println
+    println(map)
   }
 }
