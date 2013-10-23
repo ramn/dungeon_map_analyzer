@@ -39,7 +39,10 @@ class MapGraph(roomsWithExits: Map[String, Map[String, String]]) {
 
   def n(node: String) = graph get node
 
-  println(
-    n("damp cellar") shortestPathTo n("round room")
-  )
+  val pathOpt = n("damp cellar") shortestPathTo n("round room")
+
+  def formatEdge(edge: MapGraph.this.graph.EdgeT): String =
+    "%s '%s %s".format(edge._1, edge.label, edge._2)
+
+  pathOpt.map(_.edges.map(formatEdge)).foreach(println)
 }
