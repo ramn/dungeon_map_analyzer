@@ -26,13 +26,20 @@ class MapGraph(roomsWithExits: Map[String, Map[String, String]]) {
           sourceRoom != null && destRoom != null && exit != null
         }
         .map { case (exit, destRoom) =>
-          LDiEdge(sourceRoom, destRoom)(exit)
+          //LDiEdge(sourceRoom, destRoom)(exit)
+          LDiEdge(sourceRoom.toLowerCase, destRoom.toLowerCase)(exit)
         }
     }
 
   val graph = allPairs.foldLeft(Graph.empty[String, LDiEdge])(_ + _)
 
-  println(graph)
-  println
-  println(graph.edges)
+  //println(graph)
+  //println
+  //println(graph.edges)
+
+  def n(node: String) = graph get node
+
+  println(
+    n("damp cellar") shortestPathTo n("round room")
+  )
 }
