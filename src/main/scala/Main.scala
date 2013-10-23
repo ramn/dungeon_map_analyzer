@@ -17,27 +17,27 @@ object Main extends App {
 }
 
 class MapAnalyzer(pathToYamlMap: Path) {
-  val mapInYaml = io.Source.fromFile(pathToYamlMap.toFile).mkString
-  val yamlParser = new Yaml
+  protected val mapInYaml = io.Source.fromFile(pathToYamlMap.toFile).mkString
+  protected val yamlParser = new Yaml
 
   type Document = Map[String, Map[String, Any]]
 
-  val document = loadDocument(yamlParser, mapInYaml)
-  val resources = loadResources(document)
-  val map = loadMap(document)
+  lazy val document = loadDocument(yamlParser, mapInYaml)
+  lazy val resources: Map[String, List[String]] = loadResources(document)
+  lazy val map: Map[String, Map[String, String]] = loadMap(document)
 
-  def loadDocument(yamlParser: Yaml, rawYaml: String): Document =
+  protected def loadDocument(yamlParser: Yaml, rawYaml: String): Document =
     yamlParser.load(mapInYaml)
     .asInstanceOf[LinkedHashMap[String, LinkedHashMap[String, Any]]]
     .asScala
     .toMap
     .map { case (key, value) => key -> value.asScala.toMap }
 
-  def loadResources(document: Document): Map[String, List[String]] = document("Resources")
+  protected def loadResources(document: Document) = document("Resources")
     .asInstanceOf[Map[String, ArrayList[String]]]
     .map { case (key, value) => key -> value.asScala.toList }
 
-  def loadMap(document: Document): Map[String, Map[String, String]] =
+  protected def loadMap(document: Document) =
     document("Map")
     .asInstanceOf[Map[String, LinkedHashMap[String, String]]]
     .map { case (key, value) => key -> value.asScala.toMap }
