@@ -18,6 +18,7 @@ object Build extends sbt.Build {
     scalaVersion := "2.10.3",
     resolvers += "SonaType" at "https://oss.sonatype.org/content/groups/public",
     scalacOptions := Seq(
+      "-feature",
       "-unchecked",
       "-deprecation",
       "-encoding",
