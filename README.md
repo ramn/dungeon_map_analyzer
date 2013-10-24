@@ -6,5 +6,5 @@ Usage
     val mapper = new se.ramn.mapper.Main
     import mapper.graph.from
     import scala.language.reflectiveCalls
-    from("damp cellar") to("round room")""".stripMargin)
+    from("damp cellar") to("round room")
 
