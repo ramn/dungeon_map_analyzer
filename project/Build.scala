@@ -23,7 +23,13 @@ object Build extends sbt.Build {
       "-deprecation",
       "-encoding",
       "utf8"),
-    libraryDependencies ++= dependencies
+    libraryDependencies ++= dependencies,
+    initialCommands in console := """
+      val mapper = new se.ramn.mapper.Main
+      import mapper.graph.from
+      import scala.language.reflectiveCalls
+      println("from(\"damp cellar\") to(\"round room\")")
+      """
   )
 
   lazy val dependencies = Seq(

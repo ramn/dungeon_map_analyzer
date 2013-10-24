@@ -2,9 +2,9 @@ package se.ramn.mapper
 
 import scalax.collection.Graph
 import scalax.collection.edge.LDiEdge
-import scalax.collection.edge.Path
 import scalax.collection.GraphPredef._
 import scalax.collection.GraphEdge._
+import scala.language.reflectiveCalls
 
 
 class MapGraph(roomsWithExits: Map[String, Map[String, String]]) {
@@ -24,15 +24,18 @@ class MapGraph(roomsWithExits: Map[String, Map[String, String]]) {
   protected def formatEdge(edge: MapGraph.this.graph.EdgeT): String =
     "%s '%s %s".format(edge._1, edge.label, edge._2)
 
-  val pathOpt = n("damp cellar") shortestPathTo n("round room")
-
-  pathOpt.map(_.edges.map(formatEdge)).foreach(println)
-
   def from(source: String) = new {
-    def to(target: String): Path = {
-      n(source) shortestPathTo n(target)
+    def to(target: String) = {
+      val path = n(source.toLowerCase) shortestPathTo n(target.toLowerCase)
+      val instructions = path.map(_.edges.map(formatEdge)).getOrElse(List.empty)
+      instructions foreach println
     }
   }
 
-  from("damp cellar") to("round room")
+  /*
+   * Use case:
+   *
+   * import graph.from
+   * from("damp cellar") to("round room")
+   */
 }
