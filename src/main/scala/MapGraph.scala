@@ -11,12 +11,9 @@ class MapGraph(roomsWithExits: Map[String, Map[String, String]]) {
     .flatMap { case (sourceRoom, exits) =>
       exits
         .filter { case (exit, destRoom) =>
-          sourceRoom != null && destRoom != null && exit != null
-        }
+          sourceRoom != null && destRoom != null && exit != null }
         .map { case (exit, destRoom) =>
-          //LDiEdge(sourceRoom, destRoom)(exit)
-          LDiEdge(sourceRoom.toLowerCase, destRoom.toLowerCase)(exit)
-        }
+          LDiEdge(sourceRoom.toLowerCase, destRoom.toLowerCase)(exit) }
     }
 
   val graph = allPairs.foldLeft(Graph.empty[String, LDiEdge])(_ + _)
