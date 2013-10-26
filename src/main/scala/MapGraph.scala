@@ -31,10 +31,19 @@ class MapGraph(roomsWithExits: Map[String, Map[String, String]]) {
 
       // Due to a bug in shortestPathTo where it will not always find an
       // existing path, we fall back to use pathTo.
-      val path =
-        (sourceNode shortestPathTo targetNode) orElse
-        (sourceNode pathTo targetNode)
+      val shortestPath = (sourceNode shortestPathTo targetNode)
 
+      val arbitraryPath =
+        if (shortestPath.isEmpty) {
+          val arbitraryPath = (sourceNode pathTo targetNode)
+          if (arbitraryPath.isDefined) {
+            Console.err.println("Didn't find shortest path, here's a suboptimal:")
+          }
+          arbitraryPath
+        } else {
+          None
+        }
+      val path = shortestPath orElse arbitraryPath
       val instructions = path.map(_.edges.map(formatEdge)).getOrElse(List.empty)
       instructions foreach println
     }
