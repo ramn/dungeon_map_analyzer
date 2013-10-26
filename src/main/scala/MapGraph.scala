@@ -26,7 +26,15 @@ class MapGraph(roomsWithExits: Map[String, Map[String, String]]) {
 
   def from(source: String) = new {
     def to(target: String) = {
-      val path = n(source.toLowerCase) shortestPathTo n(target.toLowerCase)
+      val sourceNode = n(source.toLowerCase)
+      val targetNode = n(target.toLowerCase)
+
+      // Due to a bug in shortestPathTo where it will not always find an
+      // existing path, we fall back to use pathTo.
+      val path =
+        (sourceNode shortestPathTo targetNode) orElse
+        (sourceNode pathTo targetNode)
+
       val instructions = path.map(_.edges.map(formatEdge)).getOrElse(List.empty)
       instructions foreach println
     }
