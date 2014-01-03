@@ -30,7 +30,7 @@ object Build extends sbt.Build {
 
   lazy val dependencies = Seq(
     "org.yaml" % "snakeyaml" % "1.14-SNAPSHOT",
-    "com.assembla.scala-incubator" % "graph-core_2.10" % "1.7.0",
+    "com.assembla.scala-incubator" % "graph-core_2.10" % "1.7.2",
     "org.scalatest" % "scalatest_2.10" % "1.9.2" % "test"
   )
 }
