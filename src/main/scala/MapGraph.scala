@@ -1,5 +1,6 @@
 package se.ramn.mapper
 
+import scala.language.implicitConversions
 import scalax.collection.Graph
 import scalax.collection.edge.LDiEdge
 import scalax.collection.GraphPredef._
@@ -12,6 +13,8 @@ class MapGraph(roomsWithExits: Map[String, Map[String, String]]) {
     .flatMap { case (sourceRoom, exits) =>
       exits
         .filter { case (exit, destRoom) =>
+          //if (destRoom == null) { println(sourceRoom) }
+          //if (exit == null) { println(sourceRoom) }
           sourceRoom != null && destRoom != null && exit != null }
         .map { case (exit, destRoom) =>
           LDiEdge(sourceRoom.toLowerCase, destRoom.toLowerCase)(exit) }
@@ -24,27 +27,10 @@ class MapGraph(roomsWithExits: Map[String, Map[String, String]]) {
   protected def formatEdge(edge: MapGraph.this.graph.EdgeT): String =
     "%s '%s %s".format(edge._1, edge.label, edge._2)
 
-  def from(source: String) = new {
+  implicit class PathSource(source: String) {
     def to(target: String) = {
-      val sourceNode = n(source.toLowerCase)
-      val targetNode = n(target.toLowerCase)
-
-      // Due to a bug in shortestPathTo where it will not always find an
-      // existing path, we fall back to use pathTo.
-      val shortestPath = (sourceNode shortestPathTo targetNode)
-
-      val arbitraryPath =
-        if (shortestPath.isEmpty) {
-          val arbitraryPath = (sourceNode pathTo targetNode)
-          if (arbitraryPath.isDefined) {
-            Console.err.println("Didn't find shortest path, here's a suboptimal:")
-          }
-          arbitraryPath
-        } else {
-          None
-        }
-      val path = shortestPath orElse arbitraryPath
-      val instructions = path.map(_.edges.map(formatEdge)).getOrElse(List.empty)
+      val path = n(source.toLowerCase) shortestPathTo n(target.toLowerCase)
+      val instructions = path.map(_.edges.map(formatEdge)).getOrElse(List("Path not found"))
       instructions foreach println
     }
   }
@@ -52,7 +38,7 @@ class MapGraph(roomsWithExits: Map[String, Map[String, String]]) {
   /*
    * Use case:
    *
-   * import graph.from
-   * from("damp cellar") to("round room")
+   * import mapper.graph.PathSource
+   * "damp cellar" to "round room"  // => prints the path steps
    */
 }

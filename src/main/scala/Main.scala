@@ -10,9 +10,6 @@ object Main extends App {
 
   val document = new YamlDocumentParser(pathToYamlMap)
   val graph = new MapGraph(document.map)
-
-  import graph.from
-  from("damp cellar") to("round room")
 }
 
 class Main(yamlPathArgOpt: Option[String]) {
@@ -26,7 +23,8 @@ class Main(yamlPathArgOpt: Option[String]) {
 
   println(
     """|val mapper = new se.ramn.mapper.Main
-       |import mapper.graph.from
+       |import mapper.graph.PathSource
        |import scala.language.reflectiveCalls
-       |from("damp cellar") to("round room")""".stripMargin)
+       |"damp cellar" to "round room"
+       """.stripMargin)
 }

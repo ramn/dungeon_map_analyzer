@@ -22,9 +22,9 @@ object Build extends sbt.Build {
     libraryDependencies ++= dependencies,
     initialCommands in console := """
       val mapper = new se.ramn.mapper.Main
-      import mapper.graph.from
+      import mapper.graph.PathSource
       import scala.language.reflectiveCalls
-      println("from(\"damp cellar\") to(\"round room\")")
+      println("\"damp cellar\" to \"round room\"")
       """
   )
 
