@@ -20,5 +20,5 @@ Usage
     import scala.language.reflectiveCalls
 
     // Perform a search. The path will be printed to stdout.
-    from("damp cellar") to("round room")
+    "damp cellar" to "round room"
 
